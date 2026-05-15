@@ -1,6 +1,6 @@
-<script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-vue-next';
+<script lang="ts" setup>
+import { Link, usePage } from '@inertiajs/vue3';
+import { LayoutGrid, LogIn, NotepadText } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -12,9 +12,10 @@ import {
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
-    SidebarMenuItem,
+    SidebarMenuItem
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import { dashboard, login } from '@/routes';
+import { index as posts } from '@/routes/posts';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -22,19 +23,20 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+        isShown: !!usePage().props.auth.user,
+    },
+    {
+        title: 'Posts',
+        href: posts(),
+        icon: NotepadText,
     },
 ];
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
+        title: 'Log In',
+        href: login(),
+        icon: LogIn,
     },
 ];
 </script>
@@ -44,7 +46,7 @@ const footerNavItems: NavItem[] = [
         <SidebarHeader>
             <SidebarMenu>
                 <SidebarMenuItem>
-                    <SidebarMenuButton size="lg" as-child>
+                    <SidebarMenuButton as-child size="lg">
                         <Link :href="dashboard()">
                             <AppLogo />
                         </Link>
@@ -58,8 +60,8 @@ const footerNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
-            <NavFooter :items="footerNavItems" />
-            <NavUser />
+            <NavFooter v-if="!$page.props.auth.user" :items="footerNavItems" />
+            <NavUser v-else />
         </SidebarFooter>
     </Sidebar>
     <slot />
