@@ -36,7 +36,7 @@ class TestingServiceProvider extends ServiceProvider
         });
 
         AssertableInertia::macro('hasPaginatedResource', function (string $key, ResourceCollection $resource) {
-            $this->hasResource("{$key}.data", $resource);
+            $this->hasResource("$key.data", $resource);
 
             expect($this->prop($key))->toHaveKeys(['data', 'links', 'meta']);
 
@@ -49,6 +49,10 @@ class TestingServiceProvider extends ServiceProvider
 
         TestResponse::macro('assertHasPaginatedResource', function (string $key, ResourceCollection $resource) {
             return $this->assertInertia(fn (AssertableInertia $inertia) => $inertia->hasPaginatedResource($key, $resource));
+        });
+
+        TestResponse::macro('assertComponent', function (string $component) {
+            $this->assertInertia(fn (AssertableInertia $inertia) => $inertia->component($component, true));
         });
     }
 }

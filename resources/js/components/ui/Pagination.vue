@@ -35,7 +35,7 @@ const nextUrl = computed(() => props.meta.links.at(-1)?.url ?? undefined);
             class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between"
         >
             <div>
-                <p class="text-sm text-gray-700">
+                <p class="text-sm text-white">
                     Showing
                     {{ " " }}
                     <span class="font-medium">{{ meta.from }}</span>
