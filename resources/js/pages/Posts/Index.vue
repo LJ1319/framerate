@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
-import { formatDistance, parseISO } from 'date-fns';
 import Container from '@/components/ui/Container.vue';
 import Pagination from '@/components/ui/Pagination.vue';
 import { show } from '@/routes/posts';
 import type { PaginationMeta, Post } from '@/types';
+import { relativeDate } from '@/Utilities/date';
 
 type Props = {
     posts: {
@@ -15,8 +15,7 @@ type Props = {
 
 defineProps<Props>();
 
-const formattedDate = (post: Post) =>
-    formatDistance(parseISO(post.created_at), new Date());
+const formattedDate = (post: Post) => relativeDate(post.created_at);
 </script>
 
 <template>

@@ -5,9 +5,12 @@ import { PaginationMeta } from '@/types';
 
 type Props = {
     meta: PaginationMeta,
+    only?: string[]
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+    only: () => []
+});
 
 const previousUrl = computed(() => props.meta.links[0]?.url ?? undefined);
 const nextUrl = computed(() => props.meta.links.at(-1)?.url ?? undefined);
@@ -20,12 +23,14 @@ const nextUrl = computed(() => props.meta.links.at(-1)?.url ?? undefined);
         <div class="flex flex-1 justify-between sm:hidden">
             <Link
                 :href="previousUrl"
+                :only="only"
                 class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
                 Previous
             </Link>
             <Link
                 :href="nextUrl"
+                :only="only"
                 class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
                 Next
@@ -63,6 +68,7 @@ const nextUrl = computed(() => props.meta.links.at(-1)?.url ?? undefined);
                                 'z-10 bg-sidebar-accent': link.active,
                             }"
                             :href="link.url"
+                            :only="only"
                             class="relative inline-flex items-center px-3 py-2 first-of-type:rounded-l-md last-of-type:rounded-r-md ring-gray-300 ring-1 ring-inset"
                         >
                             <span v-html="link.label"></span>

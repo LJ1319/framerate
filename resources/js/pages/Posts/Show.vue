@@ -1,18 +1,22 @@
 <script lang="ts" setup>
-import { formatDistance, parseISO } from 'date-fns';
 import { computed } from 'vue';
+import Comment from '@/components/Comment.vue';
 import Container from '@/components/ui/Container.vue';
-import type { Post } from '@/types';
+import Pagination from '@/components/ui/Pagination.vue';
+import type { Comment as CommentType, PaginationMeta, Post } from '@/types';
+import { relativeDate } from '@/Utilities/date';
 
 type Props = {
     post: Post;
+    comments: {
+        data: CommentType[];
+        meta: PaginationMeta;
+    };
 };
 
 const props = defineProps<Props>();
 
-const formattedDate = computed(() =>
-    formatDistance(parseISO(props.post.created_at), new Date()),
-);
+const formattedDate = computed(() => relativeDate(props.post.created_at));
 </script>
 
 <template>
@@ -25,5 +29,21 @@ const formattedDate = computed(() =>
         <article class="mt-6">
             <pre class="font-sans whitespace-pre-wrap">{{ post.body }}</pre>
         </article>
+
+        <div class="mt-12">
+            <h2 class="text-xl font-semibold">Comments</h2>
+
+            <ul class="mt-4 divide-y">
+                <li
+                    v-for="comment in comments.data"
+                    :key="comment.id"
+                    class="bg-sidebar px-2 py-4"
+                >
+                    <Comment :comment="comment" />
+                </li>
+            </ul>
+
+            <Pagination :meta="comments.meta" :only="['comments']" />
+        </div>
     </Container>
 </template>
