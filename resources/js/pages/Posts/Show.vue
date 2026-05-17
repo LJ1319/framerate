@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import Comment from '@/components/Comment.vue';
 import InputError from '@/components/InputError.vue';
@@ -8,6 +8,7 @@ import Container from '@/components/ui/container/Container.vue';
 import { Label } from '@/components/ui/label';
 import Pagination from '@/components/ui/pagination/Pagination.vue';
 import TextArea from '@/components/ui/textarea/TextArea.vue';
+import { destroy } from '@/routes/comments';
 import { store } from '@/routes/posts/comments';
 import type { Comment as CommentType, PaginationMeta, Post } from '@/types';
 import { relativeDate } from '@/Utilities/date';
@@ -28,13 +29,25 @@ const commentForm = useForm({
     body: '',
 });
 
-const url = store(props.post.id).url;
-
 const addComment = () =>
-    commentForm.post(url, {
+    commentForm.post(store(props.post.id).url, {
         preserveScroll: true,
         onSuccess: () => commentForm.reset(),
     });
+
+const deleteOptions = {
+    query: {
+        page: props.comments.meta.current_page,
+    },
+};
+
+const deleteComment = (commentId: CommentType['id']) => {
+    const route = destroy(commentId, deleteOptions);
+
+    router.delete(route.url, {
+        preserveScroll: true,
+    });
+};
 </script>
 
 <template>
@@ -82,7 +95,7 @@ const addComment = () =>
                     :key="comment.id"
                     class="bg-sidebar px-2 py-4"
                 >
-                    <Comment :comment="comment" />
+                    <Comment :comment="comment" @delete="deleteComment" />
                 </li>
             </ul>
 

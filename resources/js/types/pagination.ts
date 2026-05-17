@@ -1,4 +1,5 @@
 export type PaginationMeta = {
+    current_page: number;
     from: string;
     to: string;
     total: number;

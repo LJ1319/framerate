@@ -1,17 +1,14 @@
 <script lang="ts" setup>
-import { router } from '@inertiajs/vue3';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getInitials } from '@/composables/useInitials';
-import { destroy } from '@/routes/comments';
 import type { Comment } from '@/types';
 import { relativeDate } from '@/Utilities/date.js';
 
-const props = defineProps<{ comment: Comment }>();
+defineProps<{ comment: Comment }>();
 
-const deleteComment = () =>
-    router.delete(destroy(props.comment.id).url, {
-        preserveScroll: true,
-    });
+defineEmits<{
+    delete: [id: Comment['id']];
+}>();
 </script>
 
 <template>
@@ -29,7 +26,7 @@ const deleteComment = () =>
             </AvatarFallback>
         </Avatar>
 
-        <div>
+        <div class="flex-1">
             <p class="break-all">{{ comment.body }}</p>
             <span
                 class="mt-1 block text-xs text-gray-300 first-letter:uppercase"
@@ -37,9 +34,13 @@ const deleteComment = () =>
                 By {{ comment.user.name }}
                 {{ relativeDate(comment.created_at) }} ago
             </span>
-            <div v-if="comment.can.delete" class="mt-1">
-                <form @submit.prevent="deleteComment">
-                    <button>Delete</button>
+            <div v-if="comment.can.delete" class="mt-2 text-right empty:hidden">
+                <form @submit.prevent="$emit('delete', comment.id)">
+                    <button
+                        class="font-mono text-xs text-red-500 hover:font-semibold"
+                    >
+                        Delete
+                    </button>
                 </form>
             </div>
         </div>
