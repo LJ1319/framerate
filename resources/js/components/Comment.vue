@@ -21,8 +21,9 @@ defineProps<{ comment: Comment }>();
                 {{ getInitials(comment.user?.name) }}
             </AvatarFallback>
         </Avatar>
+
         <div>
-            <p>{{ comment.body }}</p>
+            <p class="break-all">{{ comment.body }}</p>
             <span
                 class="mt-1 block text-xs text-gray-300 first-letter:uppercase"
             >

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import { PaginationMeta } from '@/types';
+import { PaginationMeta } from 'resources/js/types';
 
 type Props = {
     meta: PaginationMeta,

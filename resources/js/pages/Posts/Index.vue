@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
-import Container from '@/components/ui/Container.vue';
-import Pagination from '@/components/ui/Pagination.vue';
+import Container from '@/components/ui/container/Container.vue';
+import Pagination from '@/components/ui/pagination/Pagination.vue';
 import { show } from '@/routes/posts';
 import type { PaginationMeta, Post } from '@/types';
 import { relativeDate } from '@/Utilities/date';
