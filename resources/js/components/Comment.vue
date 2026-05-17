@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { router, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { router } from '@inertiajs/vue3';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getInitials } from '@/composables/useInitials';
 import { destroy } from '@/routes/comments';
@@ -13,10 +12,6 @@ const deleteComment = () =>
     router.delete(destroy(props.comment.id).url, {
         preserveScroll: true,
     });
-
-const canDelete = computed(
-    () => props.comment.user.id === usePage().props.auth.user?.id,
-);
 </script>
 
 <template>
@@ -42,7 +37,7 @@ const canDelete = computed(
                 By {{ comment.user.name }}
                 {{ relativeDate(comment.created_at) }} ago
             </span>
-            <div v-if="canDelete" class="mt-1">
+            <div v-if="comment.can.delete" class="mt-1">
                 <form @submit.prevent="deleteComment">
                     <button>Delete</button>
                 </form>

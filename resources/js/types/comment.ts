@@ -5,4 +5,7 @@ export type Comment = {
     body: string;
     created_at: string;
     user: User;
+    can: {
+        delete: boolean | null;
+    };
 };
