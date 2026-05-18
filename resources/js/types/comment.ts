@@ -6,6 +6,7 @@ export type Comment = {
     created_at: string;
     user: User;
     can: {
+        update: boolean | null;
         delete: boolean | null;
     };
 };
